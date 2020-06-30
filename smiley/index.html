@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <style>
+    body {
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+    }
+
+    .links-row {
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    a {
+      font-size: 20px;
+    }
+
+    .visualization {
+      margin-top: 80px;
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+  </style>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <title>
+    D3 Practic
+  </title>
+</head>
+
+<body>
+  <h1>Smiley Face</h1>
+  <div class="links-row">
+    <a href="../index.html">Back Home</a>
+  </div>
+  <div class="visualization">
+    <svg width="960" height="500">
+    </svg>
+  </div>
+  <script>
+    const select = d3.select;
+    const arc = d3.arc;
+
+    const svg = select("svg");
+
+    const height = +svg.attr('height');
+    const width = +svg.attr('width');
+
+    const g = svg.append('g')
+      .attr('transform', `translate(${width/2}, ${height/2})`);
+
+    const circle = g.append('circle')
+      .attr('r', height / 2.1)
+      .attr('fill', 'yellow')
+      .attr('stroke', 'black')
+      .attr('stroke-width', '6px');
+
+    const eyeSpacing = 100;
+    const eyeYOffset = -70;
+    const eyeRadius = height / 25;
+
+
+    const eyesGrp = g.append('g')
+      .attr('transform', `translate(0, ${eyeYOffset})`);
+
+    const leftEye = eyesGrp.append('circle')
+      .attr('r', eyeRadius)
+      .attr('cx', -eyeSpacing);
+
+    const eyeBrowWidth = 70;
+    const eyeBrowHeight = 15;
+    const eyeBrowYOffset = 50;
+
+    const rightEye = eyesGrp.append('circle')
+      .attr('r', eyeRadius)
+      .attr('cx', eyeSpacing);
+
+    const eyesbrowGrp = eyesGrp.append('g')
+      .attr('transform', `translate(0, ${- eyeBrowYOffset})`);
+
+
+    const leftEyebrow = eyesbrowGrp.append('rect')
+      .attr('width', eyeBrowWidth)
+      .attr('height', eyeBrowHeight)
+      .attr('x', -eyeSpacing - eyeBrowWidth / 2);
+
+    const rightEyebrow = eyesbrowGrp.append('rect')
+      .attr('width', eyeBrowWidth)
+      .attr('height', eyeBrowHeight)
+      .attr('x', eyeSpacing - eyeBrowWidth / 2);
+
+
+    const mouth = g.append('path')
+      .attr('d', arc()({
+        innerRadius: 135,
+        outerRadius: 150,
+        startAngle: Math.PI / 2,
+        endAngle: Math.PI * 3 / 2,
+      }));
+
+    const eyebrowAnimation = () => {
+      eyesbrowGrp
+        .transition()
+        .duration(2000)
+        .attr('transform', `translate(0, ${- eyeBrowYOffset - 40})`)
+        .transition()
+        .duration(2000)
+        .attr('transform', `translate(0, ${- eyeBrowYOffset})`)
+    }
+
+    eyebrowAnimation()
+    setInterval(() => eyebrowAnimation(), 4500)
+
+  </script>
+</body>
+
+</html>
